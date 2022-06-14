@@ -1,6 +1,9 @@
 import React from "react";
+import Grade from './assets/grade';
 
-const grade = ['희귀', '영웅', '전설', '유물(일반)', '유물(아브)', '고대', '에스더'];
+console.log(Grade);
+
+// 유물(아브)는 20강까지, 에스더는 8강까지
 
 const App = () => {
     return <div className="wrap">
@@ -16,14 +19,15 @@ const App = () => {
                 <dt>등급</dt>
                 <dd>
                     <select>
-                        {grade.map((v) => <option value={v}>{v}</option>)}
+                        {Grade.map(({name}) => <option value={name} key={name}>{name}</option>)}
                     </select>
                 </dd>
             </dl>
             <dl>
                 <dt>강화수치</dt>
                 <dd>
-                    <input type="text" />
+                    <input type="number" />
+                    <input type="range" min="0" max="20" step="1"></input>
                 </dd>
             </dl>
         </div>
