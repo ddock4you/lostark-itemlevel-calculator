@@ -8,6 +8,9 @@ const App = () => {
             <option>3티어 (고정)</option>
         </select>
         <div>
+        
+        </div>
+        <div>
             <p>머리</p>
             <dl>
                 <dt>등급</dt>
@@ -23,8 +26,6 @@ const App = () => {
                     <input type="text" />
                 </dd>
             </dl>
-            
-            
         </div>
     </div>;
 };
