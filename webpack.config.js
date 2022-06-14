@@ -10,7 +10,11 @@ module.exports = {
     //생성될 번들 파일은 js 폴더 하위에 app.js라는 이름으로 생성
     //이 파일은 ./src/App.jsx를 시작으로 번들링(하나로 합치기)합니다.
     entry: {
-        "js/app": ["./src/App.tsx"],
+        "ts/app": ["./src/index.tsx"],
+        // app: path.join(__dirname, "src", "index.tsx"),
+    },
+    resolve: {
+        extensions: [".ts", ".tsx", ".js", ".jsx"],
     },
 
     //생성된 번들 파일(bundle)은 ./dist/ 폴더에 생성
@@ -19,7 +23,6 @@ module.exports = {
         path: path.resolve(__dirname, "dist/"),
         publicPath: "/",
     },
-
     //React(리액트) 파일인 jsx와 js는 babel(바벨)을 이용하여 빌드
     module: {
         rules: [
