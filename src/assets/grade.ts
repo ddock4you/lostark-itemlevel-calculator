@@ -1,7 +1,7 @@
 const grade = [
     {
         name: "희귀",
-        level: [
+        itemLevel: [
             1302,
             1304,
             1307,
@@ -32,7 +32,7 @@ const grade = [
     },
     {
         name: "영웅",
-        level: [
+        itemLevel: [
             1302,
             1304,
             1307,
@@ -63,7 +63,7 @@ const grade = [
     },
     {
         name: "전설",
-        level: [
+        itemLevel: [
             1340,
             1345,
             1350,
@@ -94,7 +94,7 @@ const grade = [
     },
     {
         name: "유물(일반)",
-        level: [
+        itemLevel: [
             1340,
             1345,
             1350,
@@ -124,8 +124,8 @@ const grade = [
         ],
     },
     {
-        name: "유물(일반)",
-        level: [
+        name: "유물(아브)",
+        itemLevel: [
             1390,
             1400,
             1410,
@@ -151,7 +151,7 @@ const grade = [
     },
     {
         name: "고대",
-        level: [
+        itemLevel: [
             1390,
             1400,
             1410,
@@ -182,7 +182,7 @@ const grade = [
     },
     {
         name: "에스더",
-        level: [1200, 1200, 1300, 1400, 1500, 1600, 1625, 1635, 1645],
+        itemLevel: [1200, 1200, 1300, 1400, 1500, 1600, 1625, 1635, 1645],
     },
 ];
 
