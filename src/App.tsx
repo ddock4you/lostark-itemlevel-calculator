@@ -70,7 +70,11 @@ const App = () => {
 
     const handleBlur = (e) => {
         if (!e.target.value) {
-            setHead({ ...head, itemLevel: 0 });
+            setHead({
+                ...head,
+                honningLevel: 0,
+                itemLevel: levelCalculate(head.grade, 0),
+            });
         }
     };
 
@@ -106,6 +110,7 @@ const App = () => {
                                 min="0"
                                 max={`${maxHonningLevel(head.grade)}`}
                                 onChange={changeHonningLevel}
+                                onBlur={handleBlur}
                                 ref={headRef}
                             />
                             <input
