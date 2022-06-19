@@ -1,7 +1,7 @@
 import React, { useRef, useState } from "react";
+import usepart from "./hooks/usepart";
 import Grade from "./assets/grade";
-
-console.log(Grade);
+import ItemPart from "./components/ItemPart";
 
 // 유물(아브)는 20강까지, 에스더는 8강까지
 
@@ -12,73 +12,24 @@ interface ItemInfo {
 }
 
 const App = () => {
-    const [head, setHead] = useState({
-        grade: Grade[0].name,
-        honningLevel: 0,
-        itemLevel: Grade[0].itemLevel[0],
-    });
+    const {
+        item: head,
+        changeGrade,
+        changeHonningLevel,
+        handleBlur,
+        maxHonningLevel,
+    } = usepart();
+    const {
+        item: arms,
+        changeGrade: armsChangeGrade,
+        changeHonningLevel: armsChangeHonningLevel,
+        handleBlur: armsHandleBlur,
+        maxHonningLevel: armsMaxHonningLevel,
+    } = usepart();
+
     const headRef = useRef(null);
 
-    const changeGrade = (e) => {
-        const index = Grade.findIndex(
-            ({ name }: { name: string }) => name === e.target.value
-        );
-        if (index < 0) {
-            alert("올바르지 않은 등급입니다.");
-            return;
-        }
-
-        const convertHonningLevel = (): number => {
-            const max = maxHonningLevel(e.target.value);
-            return head.honningLevel > max ? max : head.honningLevel;
-        };
-
-        setHead({
-            grade: e.target.value,
-            honningLevel: convertHonningLevel(),
-            itemLevel: levelCalculate(e.target.value, convertHonningLevel()),
-        });
-    };
-
-    const changeHonningLevel = (e) => {
-        setHead({
-            ...head,
-            honningLevel: e.target.value,
-            itemLevel: levelCalculate(head.grade, e.target.value),
-        });
-    };
-
-    const levelCalculate = (grade: string, honningLevel: number): number => {
-        const index = Grade.findIndex(
-            ({ name }: { name: string }) => name === grade
-        );
-
-        if (index < 0) {
-            alert(
-                `잘못된 등급으로 레벨 계산이 불가능합니다.\n선택된 등급: ${grade}`
-            );
-        }
-        return Grade[index].itemLevel[honningLevel];
-    };
-
-    const maxHonningLevel = (grade: string): number => {
-        const index = Grade.findIndex(
-            ({ name }: { name: string }) => name === grade
-        );
-        return Grade[index].itemLevel.length - 1;
-    };
-
-    const handleBlur = (e) => {
-        if (!e.target.value) {
-            setHead({
-                ...head,
-                honningLevel: 0,
-                itemLevel: levelCalculate(head.grade, 0),
-            });
-        }
-    };
-
-    const averageLevel = head.itemLevel;
+    const averageLevel = (head.itemLevel + arms.itemLevel) / 2;
 
     return (
         <div className="wrap">
@@ -86,8 +37,16 @@ const App = () => {
             <select>
                 <option>3티어 (고정)</option>
             </select>
-            <div className="">
-                <div>
+            <div>
+                <ItemPart
+                    partname="머리",
+                    changeGrade={changeGrade},
+                    itempart={head},
+                    maxHonningLevel={maxHonningLevel},
+                    changeHonningLevel={changeHonningLevel},
+                    handleBlur={handleBlur}
+                />
+                <div className="itempart">
                     <p>머리</p>
                     <dl>
                         <dt>등급</dt>
@@ -120,6 +79,45 @@ const App = () => {
                                 step="1"
                                 value={head.honningLevel}
                                 onChange={changeHonningLevel}
+                            />
+                        </dd>
+                    </dl>
+                </div>
+                <div className="itempart">
+                    <p>팔</p>
+                    <dl>
+                        <dt>등급</dt>
+                        <dd>
+                            <select
+                                onChange={armsChangeGrade}
+                                value={head.grade}
+                            >
+                                {Grade.map(({ name }) => (
+                                    <option value={name} key={name}>
+                                        {name}
+                                    </option>
+                                ))}
+                            </select>
+                        </dd>
+                    </dl>
+                    <dl>
+                        <dt>강화수치</dt>
+                        <dd>
+                            <input
+                                type="number"
+                                value={arms.honningLevel}
+                                min="0"
+                                max={`${armsMaxHonningLevel(arms.grade)}`}
+                                onChange={armsChangeHonningLevel}
+                                onBlur={armsHandleBlur}
+                            />
+                            <input
+                                type="range"
+                                min="0"
+                                max={`${armsMaxHonningLevel(arms.grade)}`}
+                                step="1"
+                                value={arms.honningLevel}
+                                onChange={armsChangeHonningLevel}
                             />
                         </dd>
                     </dl>
