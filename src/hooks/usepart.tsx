@@ -1,14 +1,15 @@
 import React, { useState } from "react";
 import Grade from "../assets/grade";
+import { itemInfo } from "../types/itemInfo";
 
 const usepart = () => {
-    const [item, setItem] = useState({
+    const [item, setItem] = useState<itemInfo>({
         grade: Grade[0].name,
         honningLevel: 0,
         itemLevel: Grade[0].itemLevel[0],
     });
 
-    const changeGrade = (e) => {
+    const changeGrade = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const selectedGrade = e.target.value;
         const index = Grade.findIndex(
             ({ name }: { name: string }) => name === e.target.value
@@ -28,16 +29,21 @@ const usepart = () => {
         });
     };
 
-    const convertHonningLevel = (value: string): number => {
+    const convertHonningLevel: (value: string) => number = (value): number => {
         const max = maxHonningLevel(value);
         return item.honningLevel > max ? max : item.honningLevel;
     };
 
-    const changeHonningLevel = (e) => {
+    const changeHonningLevel = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const enteredValue = Number(e.target.value);
+        if (Number.isNaN(enteredValue)) {
+            alert("숫자만 입력해주세요.");
+            return;
+        }
         setItem({
             ...item,
-            honningLevel: e.target.value,
-            itemLevel: levelCalculate(item.grade, e.target.value),
+            honningLevel: enteredValue,
+            itemLevel: levelCalculate(item.grade, enteredValue),
         });
     };
 

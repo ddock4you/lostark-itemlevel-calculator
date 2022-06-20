@@ -39,11 +39,11 @@ const App = () => {
             </select>
             <div>
                 <ItemPart
-                    partname="머리",
-                    changeGrade={changeGrade},
-                    itempart={head},
-                    maxHonningLevel={maxHonningLevel},
-                    changeHonningLevel={changeHonningLevel},
+                    partname="머리"
+                    changeGrade={changeGrade}
+                    itempart={head}
+                    maxHonningLevel={maxHonningLevel}
+                    changeHonningLevel={changeHonningLevel}
                     handleBlur={handleBlur}
                 />
                 <div className="itempart">
