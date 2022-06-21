@@ -3,3 +3,12 @@ export interface itemInfo {
     honningLevel: number;
     itemLevel: number;
 }
+
+export interface itemPartInfo {
+    partname: string;
+    changeGrade: any;
+    itempart: any;
+    maxHonningLevel: any;
+    changeHonningLevel: any;
+    handleBlur: any;
+}

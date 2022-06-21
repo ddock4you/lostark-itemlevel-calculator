@@ -29,21 +29,26 @@ const usepart = () => {
         });
     };
 
-    const convertHonningLevel: (value: string) => number = (value): number => {
+    const convertHonningLevel = (value: string): number => {
         const max = maxHonningLevel(value);
         return item.honningLevel > max ? max : item.honningLevel;
     };
 
     const changeHonningLevel = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (e.target.value) return;
         const enteredValue = Number(e.target.value);
+        const max = maxHonningLevel(item.grade);
+        const finalValue = enteredValue > max ? max : enteredValue;
+
         if (Number.isNaN(enteredValue)) {
             alert("숫자만 입력해주세요.");
             return;
         }
+
         setItem({
             ...item,
-            honningLevel: enteredValue,
-            itemLevel: levelCalculate(item.grade, enteredValue),
+            honningLevel: finalValue,
+            itemLevel: levelCalculate(item.grade, finalValue),
         });
     };
 
@@ -67,7 +72,7 @@ const usepart = () => {
         return Grade[index].itemLevel.length - 1;
     };
 
-    const handleBlur = (e) => {
+    const handleBlur = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (!e.target.value) {
             setItem({
                 ...item,

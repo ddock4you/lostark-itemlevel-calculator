@@ -1,14 +1,6 @@
 import React from "react";
 import Grade from "../assets/grade";
-
-interface itemPartInfo {
-    partname: string;
-    changeGrade: any;
-    itempart: any;
-    maxHonningLevel: any;
-    changeHonningLevel: any;
-    handleBlur: any;
-}
+import { itemPartInfo } from "../types/itemInfo";
 
 const ItemPart = ({
     partname,
