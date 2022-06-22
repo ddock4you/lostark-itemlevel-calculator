@@ -1,8 +1,9 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, ChangeEvent } from "react";
 import usepart from "./hooks/usepart";
-import Grade from "./assets/grade";
+import GradeList from "./components/GradeList";
 import ItemPart from "./components/ItemPart";
 import styled from "styled-components";
+import Grade from "./assets/grade";
 
 // 유물(아브)는 20강까지, 에스더는 8강까지
 // Head, Shoulders, Chest, Hands and Legs.
@@ -67,8 +68,6 @@ const App = () => {
         maxHonningLevel: weaponMaxHonningLevel,
     } = usepart();
 
-    const headRef = useRef(null);
-
     const averageLevel = (
         (head.itemLevel +
             shoulders.itemLevel +
@@ -79,12 +78,50 @@ const App = () => {
         6
     ).toFixed(2);
 
+    const changeAllGrade = (e: ChangeEvent<HTMLSelectElement>) => {
+        console.log(e.target.value);
+        legsChangeGrade(e);
+    };
+
     return (
         <div className="wrap">
             티어:{" "}
             <select>
                 <option>3티어 (고정)</option>
             </select>
+            <div className="change-all" style={{ border: "1px solid #ddd" }}>
+                <p>일괄수정</p>
+                <dl>
+                    <dt>등급</dt>
+                    <dd>
+                        <GradeList
+                            changeGrade={changeAllGrade}
+                            itempart={Grade[0].name[0]}
+                        />
+                    </dd>
+                </dl>
+                <dl>
+                    <dt>강화수치</dt>
+                    <dd>
+                        <input
+                            type="number"
+                            value="0"
+                            min="0"
+                            max="25"
+                            // onChange={}
+                            // onBlur={}
+                        />
+                        <input
+                            type="range"
+                            min="0"
+                            max="25"
+                            step="1"
+                            value="0"
+                            // onChange={changeHonningLevel}
+                        />
+                    </dd>
+                </dl>
+            </div>
             <ItemGroup>
                 <ItemPart
                     partname="머리"

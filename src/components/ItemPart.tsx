@@ -1,6 +1,6 @@
 import React from "react";
-import Grade from "../assets/grade";
 import { itemPartInfo } from "../types/itemInfo";
+import GradeList from "./GradeList";
 
 const ItemPart = ({
     partname,
@@ -17,13 +17,10 @@ const ItemPart = ({
                 <dl>
                     <dt>등급</dt>
                     <dd>
-                        <select onChange={changeGrade} value={itempart.grade}>
-                            {Grade.map(({ name }) => (
-                                <option value={name} key={name}>
-                                    {name}
-                                </option>
-                            ))}
-                        </select>
+                        <GradeList
+                            changeGrade={changeGrade}
+                            itempart={itempart.grade}
+                        />
                     </dd>
                 </dl>
                 <dl>
