@@ -1,6 +1,6 @@
 export interface itemInfo {
     grade: string;
-    honningLevel: number;
+    honningLevel: number | string;
     itemLevel: number;
 }
 

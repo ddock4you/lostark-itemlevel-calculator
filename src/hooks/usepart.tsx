@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, ChangeEvent } from "react";
 import Grade from "../assets/grade";
 import { itemInfo } from "../types/itemInfo";
 
@@ -9,7 +9,7 @@ const usepart = () => {
         itemLevel: Grade[0].itemLevel[0],
     });
 
-    const changeGrade = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const changeGrade = (e: ChangeEvent<HTMLSelectElement>) => {
         const selectedGrade = e.target.value;
         const index = Grade.findIndex(
             ({ name }: { name: string }) => name === e.target.value
@@ -31,19 +31,23 @@ const usepart = () => {
 
     const convertHonningLevel = (value: string): number => {
         const max = maxHonningLevel(value);
-        return item.honningLevel > max ? max : item.honningLevel;
+        const honningLevel = Number(item.honningLevel);
+        return honningLevel > max ? max : honningLevel;
     };
 
-    const changeHonningLevel = (e: React.ChangeEvent<HTMLInputElement>) => {
-        if (e.target.value) return;
-        const enteredValue = Number(e.target.value);
-        const max = maxHonningLevel(item.grade);
-        const finalValue = enteredValue > max ? max : enteredValue;
-
-        if (Number.isNaN(enteredValue)) {
-            alert("숫자만 입력해주세요.");
+    const changeHonningLevel = (e: ChangeEvent<HTMLInputElement>) => {
+        const enteredValue = e.target.value;
+        if (enteredValue === "") {
+            setItem({
+                ...item,
+                honningLevel: enteredValue,
+            });
             return;
         }
+
+        const honningLevel = Number(enteredValue);
+        const max = maxHonningLevel(item.grade);
+        const finalValue = honningLevel > max ? max : honningLevel;
 
         setItem({
             ...item,
@@ -72,7 +76,7 @@ const usepart = () => {
         return Grade[index].itemLevel.length - 1;
     };
 
-    const handleBlur = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleBlur = (e: ChangeEvent<HTMLInputElement>) => {
         if (!e.target.value) {
             setItem({
                 ...item,
