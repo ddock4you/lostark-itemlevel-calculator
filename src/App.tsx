@@ -4,6 +4,7 @@ import GradeList from "./components/GradeList";
 import ItemPart from "./components/ItemPart";
 import styled from "styled-components";
 import Grade from "./assets/grade";
+import { INIT_ITEM_STAT } from "./assets/init";
 
 // 유물(아브)는 20강까지, 에스더는 8강까지
 // Head, Shoulders, Chest, Hands and Legs.
@@ -20,12 +21,18 @@ const ItemGroup = styled.div`
 `;
 
 const App = () => {
+    const [allGrade, setAllGrade] = useState<string>(Grade[0].name);
+    const [allHonningLevel, setAllHonningLevel] = useState<number | string>(0);
+
+    const { maxHonningLevel } = usepart();
+
     const {
         item: head,
-        changeGrade,
-        changeHonningLevel,
-        handleBlur,
-        maxHonningLevel,
+        changeGrade: headChangeGrade,
+        changeHonningLevel: headChangeHonningLevel,
+        handleBlur: headHandleBlur,
+        maxHonningLevel: headMaxHonningLevel,
+        setItem: headSetItem,
     } = usepart();
 
     const {
@@ -34,6 +41,7 @@ const App = () => {
         changeHonningLevel: handsChangeHonningLevel,
         handleBlur: handsHandleBlur,
         maxHonningLevel: handsMaxHonningLevel,
+        setItem: handsSetItem,
     } = usepart();
 
     const {
@@ -42,6 +50,7 @@ const App = () => {
         changeHonningLevel: shouldersChangeHonningLevel,
         handleBlur: shouldersHandleBlur,
         maxHonningLevel: shouldersMaxHonningLevel,
+        setItem: shouldersSetItem,
     } = usepart();
 
     const {
@@ -50,6 +59,7 @@ const App = () => {
         changeHonningLevel: chestChangeHonningLevel,
         handleBlur: chestHandleBlur,
         maxHonningLevel: chestMaxHonningLevel,
+        setItem: chestSetItem,
     } = usepart();
 
     const {
@@ -58,6 +68,7 @@ const App = () => {
         changeHonningLevel: legsChangeHonningLevel,
         handleBlur: legsHandleBlur,
         maxHonningLevel: legsMaxHonningLevel,
+        setItem: legsSetItem,
     } = usepart();
 
     const {
@@ -66,6 +77,7 @@ const App = () => {
         changeHonningLevel: weaponChangeHonningLevel,
         handleBlur: weaponHandleBlur,
         maxHonningLevel: weaponMaxHonningLevel,
+        setItem: weaponSetItem,
     } = usepart();
 
     const averageLevel = (
@@ -79,8 +91,56 @@ const App = () => {
     ).toFixed(2);
 
     const changeAllGrade = (e: ChangeEvent<HTMLSelectElement>) => {
-        console.log(e.target.value);
+        setAllGrade(e.target.value);
+        headChangeGrade(e);
         legsChangeGrade(e);
+        handsChangeGrade(e);
+        shouldersChangeGrade(e);
+        chestChangeGrade(e);
+        weaponChangeGrade(e);
+    };
+
+    const changeAllHoningLevel = (e: ChangeEvent<HTMLInputElement>) => {
+        const enteredValue = e.target.value;
+        if (enteredValue === "") {
+            setAllHonningLevel(enteredValue);
+            return;
+        }
+
+        const honningLevel = Number(enteredValue);
+        const max = maxHonningLevel(allGrade);
+        const finalValue = honningLevel > max ? max : honningLevel;
+        setAllHonningLevel(finalValue);
+
+        headChangeHonningLevel(e);
+        handsChangeHonningLevel(e);
+        shouldersChangeHonningLevel(e);
+        chestChangeHonningLevel(e);
+        legsChangeHonningLevel(e);
+        weaponChangeHonningLevel(e);
+    };
+
+    const handleBlur = (e: ChangeEvent<HTMLInputElement>) => {
+        if (!e.target.value) {
+            setAllHonningLevel(0);
+            headHandleBlur(e);
+            handsHandleBlur(e);
+            shouldersHandleBlur(e);
+            chestHandleBlur(e);
+            legsHandleBlur(e);
+            weaponHandleBlur(e);
+        }
+    };
+
+    const resetAllStat = () => {
+        setAllGrade(Grade[0].name);
+        setAllHonningLevel(0);
+        headSetItem(INIT_ITEM_STAT);
+        handsSetItem(INIT_ITEM_STAT);
+        shouldersSetItem(INIT_ITEM_STAT);
+        chestSetItem(INIT_ITEM_STAT);
+        legsSetItem(INIT_ITEM_STAT);
+        weaponSetItem(INIT_ITEM_STAT);
     };
 
     return (
@@ -96,7 +156,7 @@ const App = () => {
                     <dd>
                         <GradeList
                             changeGrade={changeAllGrade}
-                            itempart={Grade[0].name[0]}
+                            grade={allGrade}
                         />
                     </dd>
                 </dl>
@@ -105,31 +165,34 @@ const App = () => {
                     <dd>
                         <input
                             type="number"
-                            value="0"
+                            value={allHonningLevel}
                             min="0"
-                            max="25"
-                            // onChange={}
-                            // onBlur={}
+                            max={maxHonningLevel(allGrade)}
+                            onChange={changeAllHoningLevel}
+                            onBlur={handleBlur}
                         />
                         <input
                             type="range"
                             min="0"
-                            max="25"
+                            max={maxHonningLevel(allGrade)}
                             step="1"
-                            value="0"
-                            // onChange={changeHonningLevel}
+                            value={allHonningLevel}
+                            onChange={changeAllHoningLevel}
                         />
                     </dd>
                 </dl>
+                <button type="button" onClick={resetAllStat}>
+                    초기화
+                </button>
             </div>
             <ItemGroup>
                 <ItemPart
                     partname="머리"
-                    changeGrade={changeGrade}
+                    changeGrade={headChangeGrade}
                     itempart={head}
-                    maxHonningLevel={maxHonningLevel}
-                    changeHonningLevel={changeHonningLevel}
-                    handleBlur={handleBlur}
+                    maxHonningLevel={headMaxHonningLevel}
+                    changeHonningLevel={headChangeHonningLevel}
+                    handleBlur={headHandleBlur}
                 />
                 <ItemPart
                     partname="팔"

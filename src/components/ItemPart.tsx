@@ -19,7 +19,7 @@ const ItemPart = ({
                     <dd>
                         <GradeList
                             changeGrade={changeGrade}
-                            itempart={itempart.grade}
+                            grade={itempart.grade}
                         />
                     </dd>
                 </dl>

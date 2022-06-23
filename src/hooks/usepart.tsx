@@ -1,13 +1,10 @@
-import React, { useState, ChangeEvent } from "react";
+import { useState, ChangeEvent } from "react";
 import Grade from "../assets/grade";
 import { itemInfo } from "../types/itemInfo";
+import { INIT_ITEM_STAT } from "../assets/init";
 
 const usepart = () => {
-    const [item, setItem] = useState<itemInfo>({
-        grade: Grade[0].name,
-        honningLevel: 0,
-        itemLevel: Grade[0].itemLevel[0],
-    });
+    const [item, setItem] = useState<itemInfo>(INIT_ITEM_STAT);
 
     const changeGrade = (e: ChangeEvent<HTMLSelectElement>) => {
         const selectedGrade = e.target.value;
@@ -92,6 +89,7 @@ const usepart = () => {
         changeHonningLevel,
         handleBlur,
         maxHonningLevel,
+        setItem,
     };
 };
 
